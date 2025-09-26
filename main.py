@@ -18,18 +18,18 @@ def validar_factura(image_path, client):
     texts = response.text_annotations
 
     if not texts:
-        return (image_path, None, None, None, "❌ Sin texto")
+        return (image_path, None, None, None, "Sin texto")
 
    
     texto = texts[0].description
     numeros = limpiar_numeros(texto)
 
     if len(numeros) < 3:
-        return (image_path, None, None, None, "❌ Datos incompletos")
+        return (image_path, None, None, None, "Datos incompletos")
 
     
     net, vat, total = numeros[-3:]
-    estado = "✅ Correcto" if abs((net + vat) - total) < 0.01 else "❌ Error"
+    estado = "Correcto" if abs((net + vat) - total) < 0.01 else "Error"
     return (image_path, net, vat, total, estado)
 
 def procesar_lote(carpeta, salida_csv="resultados.csv", guardar_csv=False):
@@ -46,7 +46,7 @@ def procesar_lote(carpeta, salida_csv="resultados.csv", guardar_csv=False):
     
     print("\n=== RESULTADOS DEL LOTE ===")
     for factura, net, vat, total, estado in resultados:
-        print(f"📄 {factura} → Net={net}, VAT={vat}, Total={total} → {estado}")
+        print(f"{factura} → Net={net}, VAT={vat}, Total={total} → {estado}")
 
     
     if guardar_csv:
@@ -54,7 +54,7 @@ def procesar_lote(carpeta, salida_csv="resultados.csv", guardar_csv=False):
             writer = csv.writer(f)
             writer.writerow(["Factura", "Net worth", "VAT", "Total", "Estado"])
             writer.writerows(resultados)
-        print(f"\n📂 Resultados guardados en {salida_csv}")
+        print(f"\nResultados guardados en {salida_csv}")
 
 
 
